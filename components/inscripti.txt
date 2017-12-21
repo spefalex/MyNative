@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+port React, { Component } from 'react';
 import { Image , AsyncStorage, StyleSheet, View, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
 import TagInput from 'react-native-tag-input';
 import { Router, Scene, Actions} from 'react-native-router-flux';

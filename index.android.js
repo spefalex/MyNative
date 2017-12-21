@@ -13,6 +13,10 @@ import HomeScreen from './components/menu';
 import SideBar from './components/SideBar';
 import AppBody from './components/body'; 
 import Inscriptionfb from './components/Inscriptionfb';
+import Inscription from './components/Inscription';
+import Aktest from './components/Acceuil';
+
+import Confirmation from './components/confirmation';
 import BadgeExample from './components/badhe';
 import MenuComponent from './components/Acceuil';
 import UtilisateursBody from './components/UtilisateursConnecte';
@@ -46,13 +50,17 @@ export default class MyNative extends Component {
           <Scene key="home" component={UtilisateursBody} hideNavBar={true} title="Home"/>
           <Scene key="side" component={SideBar} hideNavBar={true} title="Home"/>
           <Scene key="insriptionfb" component={Inscriptionfb} hideNavBar={true} title="Home"/>
+             <Scene key="insription" component={Inscription} hideNavBar={true} title="Home"/>
+          <Scene key="confirmation" component={Confirmation} hideNavBar={true} title="Confirmation"/>
+           <Scene key="acceuil" component={Aktest} hideNavBar={true} title="Confirmation"/>
         </Scene>
       </Router>
 
 
            
      
-                     <AppFooter/>
+                     
+
                
             </Container>
       </StyleProvider>

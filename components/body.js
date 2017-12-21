@@ -12,10 +12,11 @@ import { Router, Scene, Actions} from 'react-native-router-flux';
 import {
   AppRegistry,
   StyleSheet,
- View
+ View,
+  TouchableOpacity
 } from 'react-native';
 import { Container, Content, List, ListItem, InputGroup, Input, Icon ,Text, Button, Spinner } from 'native-base';
-
+import MyIcon from 'react-native-vector-icons/FontAwesome';
 export default class AppBody extends Component {
 
  
@@ -44,32 +45,43 @@ export default class AppBody extends Component {
                         </ListItem>
 
                     </List>
-    <Button block light  onPress={this.login} >
-            <Text>Se conecter</Text>
-
-          </Button>
+  {this.renderButton()}
 
 
 
+
+<TouchableOpacity onPress={Actions.insription}>
+     <Text style={styles.inscrire}>
+    Créer compte KeyMada 
+     </Text>
+</TouchableOpacity>
+
+<TouchableOpacity onPress={Actions.aktest}>
+     <Text style={styles.inscrire}>
+    Mot de passe oublié 
+     </Text>
+</TouchableOpacity>
 <Text>
 {"\n"}
 
-</Text>
-
+</Text> 
       
- <Button rounded  onPress={this.fbAuth} style={styles.welcome}>
-            <Text>connecter par facebook</Text>
-          </Button>
+ <MyIcon.Button name="facebook" backgroundColor="#3b5998" onPress={this.fbAuth} style={styles.welcome}>
+  <Text style = {{color:'white'}}>  Se connecter par facebook </Text>
+  </MyIcon.Button>
+
+
 <Text style={styles.welcome}>
 Ou{"\n"}
 
 </Text>
- <Button rounded info style={styles.welcome}>
-            <Text>se conneter par Linkidin</Text>
-          </Button>
+<MyIcon.Button name="linkedin" backgroundColor="#0e76a8" style={styles.welcome}>
+    <Text style={{fontFamily: 'Arial', fontSize: 15 , color:'white'}}>Se connecter par linkedIn</Text>
+  </MyIcon.Button>
       
 
                 </Content>
+
             </Container>
   
     );
@@ -78,14 +90,32 @@ Ou{"\n"}
  constructor(props){
 
         super(props);
-        this.state={nomUser:'', motDePasse:''};
+        this.state={nomUser:'', motDePasse:'', loading:false};
 
     }
 
+
+renderButton(){
+
+  if(this.state.loading){
+
+    return <Spinner size="large"/>;
+  }
+
+  return (
+
+  <Button block light  onPress={this.login} >
+            <Text>Se conecter</Text>
+
+          </Button>
+    );
+}
  
     login = () => {
   
-     fetch('http://172.19.0.1:1337/Log', {
+ this.setState({loading:true})
+
+     fetch('http://192.168.57.1:1337/Log', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
@@ -94,10 +124,15 @@ Ou{"\n"}
   body: JSON.stringify({eMail:this.state.nomUser, motDePasse: this.state.motDePasse})
 })
 .then((response) => response.json()) 
-.then((responseData) => { console.log("response: " + responseData); if(responseData.message =='OK'){
+.then((responseData) => {
+ 
+ 
+ this.setState({loading:false})
+
+ console.log("response: " + responseData); if(responseData.message =='OK'){
 
 
-Actions.home({param1:responseData.utilisateurs});
+Actions.acceuil({param1:responseData.utilisateurs, param2:responseData.pdp});
 
 } else { 
 
@@ -159,6 +194,16 @@ const styles = StyleSheet.create({
     welcome : {
     
 alignSelf: 'center',
+
+// textAlign: 'center'
+
+  },
+
+      inscrire : {
+    
+alignSelf: 'center',
+color: '#7D7D7D',
+fontSize : 15
 
   },
  

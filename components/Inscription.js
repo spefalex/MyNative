@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image , AsyncStorage, StyleSheet, View, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
 import TagInput from 'react-native-tag-input';
 import { Router, Scene, Actions} from 'react-native-router-flux';
-import { Container, Header, Content, Form, Item, Input ,Button, Text, Thumbnail, Icon , Body ,InputGroup, Card ,Spinner,CheckBox} from 'native-base';
+import { Container, Header, Content, Form, Item, Input ,Button, Text, Thumbnail, Icon , InputGroup, Card ,Spinner} from 'native-base';
 import AutoTags from 'react-native-tag-autocomplete';
 import UtilisateursFb from './UtilisateursFb';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -21,12 +21,13 @@ export default class FormExample extends Component {
 this.state={
 
   data:[],
+  essaie:'',
   nomUtilisateur: '',
   prenomUtilisateur:'',
   sexe:'',
   centre:[],
   loading:false,
- ConfirmmotDePasse:'',
+
   numeroMobile:'',
   adresseMail:'',
   motDePasse:'',
@@ -80,7 +81,7 @@ showImageNew(){
 <View>
 <Image
  source= {this.state.avatarSource}
-//source={require ('../img/logo.png')}
+
 style={{height:200, width:400}}
 
 />
@@ -95,19 +96,19 @@ style={{height:200, width:400}}
     </View>
     );
 }
-showImageFb(){
+showImageDefalut(){
 
 return(
 <View>
 <Image
-source={{uri: this.state.url}}
+
 style={{width:400, height:200}}
  />
 
 
 
  <TouchableOpacity onPress={this.show.bind(this)}>
- <Text> Changer photo  </Text>
+ <Text> Ajouter photo  </Text>
      <MyIcon name="camera" size={15}/>
 
 
@@ -118,27 +119,6 @@ style={{width:400, height:200}}
 
 }
 
-
-getDonnesUtilisateurFb(){
-
-var id =this.props.param;
-return fetch('https://graph.facebook.com/v2.11/me?fields=email,name,birthday,picture&access_token='+id)
-.then((response)=> response.json())
-.then((responseJson)=>{
-var datasend= JSON.stringify(responseJson);
-alert(responseJson.picture.data.url.toString());
-var nom = responseJson.name.toString();
-var url = responseJson.picture.data.url.toString();
-
-this.setState({data:datasend, nom:nom , url:url});
-//alert(data.name);
-
-})
-.catch((error)=> {
-console.error(error);
-  });
-
-}
 
 
 renderButton(){
@@ -160,7 +140,7 @@ renderButton(){
 
 componentDidMount(){
 
-this.getDonnesUtilisateurFb();
+
 this.getDonnesUtilisateurs();
 
 }
@@ -214,7 +194,7 @@ showPdp(){
 
 if(this.state.avatarSource == null) {
 
-  return this.showImageFb();
+  return this.showImageDefalut();
 }
 
 else {
@@ -239,6 +219,17 @@ handleDelete = index => {
   render() {
 
 
+//var uri=null;
+
+
+/*var urlImage = null;
+if(this.state.avatarSource == null) {
+   urlImage = this.state.url;
+}    
+else {
+//urlImage = "http://sm.ign.com/ign_fr/screenshot/default/capture-decran-2015-10-16-a-203945_hsd1.jpg"
+urlImage = this.state.avatarSource;
+}*/
  
     return (
 
@@ -247,6 +238,10 @@ handleDelete = index => {
       <Container>
   
         <Content>
+
+
+
+ 
 
      
 {this.showPdp ()}
@@ -286,7 +281,7 @@ handleDelete = index => {
         mode="date"
         placeholder="Votre date de naissance"
         format="DD-MM-YYYY"
-        
+       
         confirmBtnText="Confirmer"
         cancelBtnText="Annuler"
         customStyles={{
@@ -314,7 +309,7 @@ handleDelete = index => {
   <Item>
                             
             <Icon name="ios-unlock" size = {20}/>
-         <Input placeholder="Confirmation de mot de passe" secureTextEntry={true} onChangeText={(ConfirmmotDePasse)=>this.setState({ConfirmmotDePasse})} value={this.state.ConfirmmotDePasse} />
+         <Input placeholder="Confirmation de mot de passe" secureTextEntry={true} onChangeText={(motDePasse)=>this.setState({motDePasse})} value={this.state.motDePasse} />
               </Item>
 
 
@@ -505,17 +500,12 @@ for(var i =0; i<count; i++)
 }
 
 this.setState({centre:JSON.stringify(liste)})
-
-//alert(this.state.centre)
-
-var tagis = liste.toString();
-
-alert(tagis)
       
 var urlUpload=responseData.toString().replace(/"/g, "");
-var urlOfIMAGE = 'http://192.168.57.1/IMAGES/'+urlUpload.substr(urlUpload.lastIndexOf('/') + 1);
 var daty = this.state.date;
 var year = daty.substring(daty.lastIndexOf("-")+1)
+var essaie = urlUpload.substr(this.href.lastIndexOf('/') + 1);
+ this.setState({essaie:essaie});
 
 fetch('http://192.168.57.1:1337/utilisateurs/Inscrire', {
   method: 'POST',
@@ -523,19 +513,14 @@ fetch('http://192.168.57.1:1337/utilisateurs/Inscrire', {
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({nomUtilisateur: this.state.nom,prenomUtilisateur:this.state.prenomUtilisateur, centreInteret:tagis, adresseMail:this.state.adresseMail, photoUtilisateur:urlOfIMAGE, localisation:this.state.localisation, anneNaissance:year,nomSociete:this.state.nomSociete,poste:this.state.poste, numeroMobile: this.state.numeroMobile, nomEtablissement:this.state.nomEtablissement, sexe:this.state.sexe,diplome:this.state.diplome, motDePasse:this.state.motDePasse})
+  body: JSON.stringify({nomUtilisateur: this.state.nom,prenomUtilisateur:this.state.prenomUtilisateur, centreInteret:this.state.centre, adresseMail:this.state.adresseMail, photoUtilisateur:urlUpload, localisation:this.state.localisation, anneNaissance:year,nomSociete:this.state.nomSociete,poste:this.state.poste, numeroMobile: this.state.numeroMobile, nomEtablissement:this.state.nomEtablissement, sexe:this.state.sexe,diplome:this.state.diplome})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
 this.setState({loading:false})
-if(responseData.message == 'email de confirmation'){
-
-  
+alert(responseData.message);
 Actions.confirmation({param1:responseData.idUtilisateur});
-} else  {
 
-  alert(responseData.message);
-}
 
  })
 .catch((err) => { console.log(err); });

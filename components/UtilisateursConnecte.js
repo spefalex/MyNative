@@ -23,6 +23,8 @@ export default class UtilisateursBody extends Component {
 this.state={
 
   data:[],
+  cards:[''],
+  
   
     }
 }
@@ -30,7 +32,7 @@ this.state={
 getDonnesUtilisateurs(){
 
 var id = this.props.param1;
-return fetch('http://172.19.0.1:1337/Informations/Utilisateur?id='+id)
+return fetch('http://192.168.57.1:1337/Informations/Utilisateur?id='+id)
 .then((response)=> response.json())
 .then((responseJson)=>{
 var datasend=JSON.stringify(responseJson.utilisateur);
@@ -48,22 +50,35 @@ console.error(error);
 componentDidMount(){
 
 this.getDonnesUtilisateurs();
+this.getDonnesOffres();
 
 }
-getDonnesEvenements(){
-
+getDonnesOffres(){
 var id = this.props.param1;
-return fetch('http://172.19.0.1/:1337/Acceuils/Utilisateurs?id='+id)
-.then((response)=> response.json())
-.then((responseJson)=>{
-
- alert(responseJson.evenement.status);
 
 
-})
-.catch((error)=> {
-console.error(error);
-  });
+  return fetch('http://192.168.57.1:1337/Acceuils/Utilisateurs?id='+id)
+    .then(response => response.json())
+    .then(responseJson => {
+
+      var arrObj = [];
+      var obj = responseJson.emploies;
+
+      
+      for(var i=0 ; i<obj.length; i++) {
+
+arrObj.push({'logo': obj[i].logo,'nomInstitution': obj[i].nomInstitution , 'titreEmploi':obj[i].titreEmploi, 'description':obj[i].description});
+ 
+      }
+
+
+ 
+      this.setState({cards:arrObj});
+   
+    })
+    .catch(error => {
+      console.error(error);
+    });
 
 }
 
@@ -79,7 +94,7 @@ console.error(error);
     
         <Container>
       
- <UtilisateursDonnes data={this.state.data}/>
+ <UtilisateursDonnes data={this.state.data} cardSource = {this.state.cards}/>
 
  
         </Container>

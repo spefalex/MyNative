@@ -23,12 +23,12 @@ export default class AppFooter extends Component {
       <Icon name="apps"/>
       <Text>  A propos </Text>
       </Button>
-      <Button activate onPress={Actions.aki}>
+      <Button activate onPress={Actions.aktest}>
       <Icon name="navigate"/>
       <Text>Activate </Text>
       </Button>
 
-       <Button activate onPress={Actions.insriptionfb}>
+       <Button activate onPress={Actions.confirmation}>
       <Icon name="person"/>
       <Text> Nous </Text>
       </Button>

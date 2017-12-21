@@ -12,7 +12,7 @@ import {
   StyleSheet,
  View
 } from 'react-native';
-import { Container, Drawer, Content, List, ListItem, InputGroup, Input, Icon ,Text, Button,Card,CardItem,Body,Thumbnail} from 'native-base';
+import { Container, Drawer, Content,ListLeft,Body, ListItem, InputGroup, Input, Icon ,Text, Button,Card,CardItem,Thumbnail, DeckSwiper} from 'native-base';
 
 export default class UtilisateursDonnes extends Component {
 
@@ -32,6 +32,57 @@ openDrawer() {
       this._drawer._root.open()
     }
 
+renderAcc() {
+
+
+
+  return (
+
+<Container>
+       
+        <View>
+          <DeckSwiper
+            dataSource={this.props.cards}
+
+            renderItem={item =>
+              <Card style={{ elevation: 3, height:3000}}>
+                <CardItem >
+                  <Left>
+                    <Thumbnail source={{uri:item.logo}} />
+
+                 
+                    <Body>
+                      <Text>{item.nomInstitution}</Text>
+                      <Text note>{item.titreEmploi}</Text>
+                    </Body>
+                  </Left>
+                </CardItem>
+                <CardItem cardBody >
+                 <Text>{item.description}</Text>
+                </CardItem>
+                <CardItem >
+               
+          <Button bordered success>
+            <Text>Matcher</Text>
+          </Button>
+
+     
+          <Button bordered style={{marginLeft:3}}>
+            <Text>Sauvegarder</Text>
+          </Button>
+               
+          <Button bordered warning style={{marginLeft:3}}>
+            <Text>Ignorer</Text>
+          </Button>
+
+                </CardItem>
+              </Card>
+            }
+          />
+        </View>
+      </Container>
+    )
+}
   render() {
 
    
@@ -39,45 +90,24 @@ openDrawer() {
 return (
   <Drawer
         ref={(ref) => { this._drawer = ref; }}
-        content={<SideBar navigator={this._navigator} />}
+        content={<SideBar navigator={this._navigator} data={this.props.data.id}/>}
         onClose={() => this.closeDrawer()} >
  
                 <Card>
                 <Button transparent onPress={()=> this.openDrawer()}>
               <Icon name='menu' />
             </Button>
-<CardItem>
-<Body>
 
-
-
-  <Text>{this.props.data.age}</Text>
-    <Text>{this.props.data.nomUtilisateur} </Text>
-
-</Body>
-
-</CardItem>
                 </Card>
+
+
                   </Drawer>
                
 
   )
 
    
-    return (
-      
- <Container>
-        
 
-      
-
-
-
-
-
- </Container>
- 
-    );
   }
 
     

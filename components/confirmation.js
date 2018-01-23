@@ -54,7 +54,7 @@ getDonnesUtilisateurs(){
 
 var id = this.props.param1;
 this.setState({idUser:id});
-return fetch('http://192.168.57.1:1337/Informations/Utilisateur?id='+id)
+return fetch('http://192.168.0.96:1337/Informations/Utilisateur?id='+id)
 .then((response)=> response.json())
 .then((responseJson)=>{
 var datasend=JSON.stringify(responseJson);
@@ -97,7 +97,7 @@ renderButton(){
   
  this.setState({loading:true})
 
-     fetch('http://192.168.57.1:1337/Log/Confirmation', {
+     fetch('http://192.168.0.96:1337/Log/Confirmation', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
@@ -112,7 +112,7 @@ renderButton(){
  this.setState({loading:false})
 
  console.log("response: " + responseData); if(responseData.token){
-Actions.acceuil({param1:this.state.idUser});
+Actions.acceuil({param1:this.state.idUser,param2:this.state.imageUrl});
 
 } else { 
 

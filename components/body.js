@@ -9,6 +9,8 @@ import UtilisateursBody from './UtilisateursConnecte';
 import AppFooter from './footer';
 import FBSDK, { LoginManager ,LoginButton, AccessToken,  GraphRequest, GraphRequestManager } from 'react-native-fbsdk'
 import { Router, Scene, Actions} from 'react-native-router-flux';
+
+import io from "socket.io-client/dist/socket.io.js";
 import {
   AppRegistry,
   StyleSheet,
@@ -33,7 +35,7 @@ export default class AppBody extends Component {
                         <ListItem>
                             <InputGroup>
                                 <Icon name="ios-person" />
-                                <Input placeholder="Identification" onChangeText={(nomUser)=>this.setState({nomUser})} value={this.state.nomUser}  />
+                                <Input placeholder="Identification" onChangeText={(nomUser)=>this.setState({nomUser})} value={this.state.nomUser} />
                             </InputGroup>
                         </ListItem>
 
@@ -56,7 +58,7 @@ export default class AppBody extends Component {
      </Text>
 </TouchableOpacity>
 
-<TouchableOpacity onPress={Actions.aktest}>
+<TouchableOpacity onPress={Actions.finale}>
      <Text style={styles.inscrire}>
     Mot de passe oublié 
      </Text>
@@ -115,7 +117,7 @@ renderButton(){
   
  this.setState({loading:true})
 
-     fetch('http://192.168.57.1:1337/Log', {
+     fetch('http://192.168.0.96:1337/Log', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
@@ -132,7 +134,7 @@ renderButton(){
  console.log("response: " + responseData); if(responseData.message =='OK'){
 
 
-Actions.acceuil({param1:responseData.utilisateurs, param2:responseData.pdp});
+Actions.acceuil({param1:responseData.utilisateurs, param2:responseData.pdp, prenom:responseData.prenom});
 
 } else { 
 

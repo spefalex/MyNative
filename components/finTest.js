@@ -2,64 +2,42 @@ import React, { Component } from 'react'
 import SideBar from './menu';
 import {Drawer, Container, Header, DeckSwiper, Card,Right,List,ListItem,Item,CardItem, Thumbnail, Separator,Left, Body, Icon, Button,Footer , FooterTab } from 'native-base';
 import MyIcon from 'react-native-vector-icons/FontAwesome';
-import AppFooter from './AppFooter';
+import AppFooter from './FooterEvenement';
 import FooterAction from './FooterAction';
 import { Router, Scene, Actions} from 'react-native-router-flux';
 import HTMLVIEW from 'react-native-htmlview';
-import AppSoory from './AppSoory';
-import io from "socket.io-client/dist/socket.io.js";
-import SocketIOClient from 'socket.io-client';
+import AppSoory from './AppSoory'
 import {
   Text,
   View,
   Image,
   ToastAndroid
 } from 'react-native'
-import Swiper from 'react-native-swiper';
+import Swiper from 'react-native-swiper'
 
 
-var e;
+
 export default class extends Component {
      constructor(props){
     super(props)
-      e = this;
-  //this.socket=io("http://192.168.0.96:3000",{jsonp:false});
-this.socket=io.connect("http://192.168.0.96:4444", { transports: ['websocket'] }, {pingTimeout: 30000});
-console.ignoredYellowBox = [
-    'Setting a timer'
-]
+      
+
       this.state={
 
  items: [],
- soory:false,
- info:'a'
-
+ soory:false
 
   
   
          }
-
-
-
-
-   }
-
-   componentWillMount() {
-
-this.socket.on("server-send",function(data){
-e.setState({info:data})
-e.getData();
-ToastAndroid.show('Nouveaux offres correspond à vous', ToastAndroid.SHORT);
-});
-    
    }
 
 getData () {
 var id= this.props.param1;
 var pdp = this.props.param2;
 
-
- return fetch('http://192.168.0.96:1337/Acceuils/Utilisateurs?id='+id)
+alert(id)
+ return fetch('http://192.168.0.96:1337/Acceuils/Evenements?id=5a420bdac2ba920b19d5f75b')
     .then(response => response.json())
     .then(responseJson => {
 
@@ -74,7 +52,7 @@ Actions.soory()
 }
  else  {
 
- this.setState({items:responseJson.emploies})
+ this.setState({items:responseJson.events})
 
  
    }
@@ -83,11 +61,13 @@ Actions.soory()
       console.error(error);
     });
 
-}  
+} 
+
+
 
  infoOffres(idOffre) {
 
-Actions.detailsOffres({param1:idOffre, idUser:this.props.param1 ,pdp:this.props.param2});
+Actions.detailsOffres({param1:idOffre});
  }
  getFiltreUtilisateurs(){
 
@@ -102,7 +82,7 @@ var pdp = this.props.param2;
 
       this.setState({filtre:responseJson.message})
 
-    
+      alert(this.state.filtre)
    
     })
     .catch(error => {
@@ -121,10 +101,6 @@ var pdp = this.props.param2;
 Actions.detailsRencontre({param1:idUtilisateurs});
  }
 
-   infoInstitutions(idInstitution,logo) {
-
-Actions.detailsEntreprise({param1:idInstitution, param2:logo, param3:this.props.param1,prenom:this.props.prenom,pdp:this.props.param2});
- }
 
  renderSoory() {
 if(this.state.soory == true)
@@ -135,37 +111,35 @@ return(<Text> Personalize votre filte</Text>)
 
     alert("a");
   }
-ignorer(idOffres,index)
+
+ignorer(idEvents,index)
 {
 
  
 
- idUtilisateur= this.props.param1;
-  fetch('http://192.168.0.96:1337/Ignorer/Offre', {
+  idUtilisateur = this.props.param1;
+  fetch('http://192.168.0.96:1337/Ignorer/Evenement', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({idOffreEmploi:idOffres, idUtilisateur: idUtilisateur})
+  body: JSON.stringify({idEvenements:idEvents, idUtilisateur: idUtilisateur})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
 
-
   data2 = this.state.items.slice(index+1).concat(this.state.items.slice(0,index));
 
 
-   this.setState({items:data2})
-ToastAndroid.show('emplois ignorer', ToastAndroid.SHORT);
-
-
+   this.setState({items:data2});
+ 
+ToastAndroid.show('evenements ignorer', ToastAndroid.SHORT);
    if(this.state.items.length == 0) {
-
     this.setState({soory:true})
-
-    Actions.soory();
+    Actions.soory()
    }
+  
   
 
 })
@@ -174,18 +148,19 @@ ToastAndroid.show('emplois ignorer', ToastAndroid.SHORT);
 
 }
 
-sauvegarder(idOffres,index)
+participe(idEvents,index)
 {
+ 
  
 
   idUtilisateur = this.props.param1;
-  fetch('http://192.168.0.96:1337/Sauvegarder/Offre', {
+  fetch('http://192.168.0.96:1337/Matcher/Evenement', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({idOffreEmploi:idOffres, idUtilisateur: idUtilisateur})
+  body: JSON.stringify({id:idEvents, idUtilisateurParticipant: idUtilisateur})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
@@ -195,8 +170,11 @@ sauvegarder(idOffres,index)
 
 
    this.setState({items:data2});
-ToastAndroid.show('emplois sauvegarder', ToastAndroid.SHORT);
-   if(this.state.items.length == 0) {
+
+ToastAndroid.show('evenements ajouter', ToastAndroid.SHORT);
+
+
+    if(this.state.items.length == 0) {
     this.setState({soory:true})
     Actions.soory()
    }
@@ -207,6 +185,42 @@ ToastAndroid.show('emplois sauvegarder', ToastAndroid.SHORT);
 
 
 }
+
+
+sauvegarder(idEvents,index)
+{
+ 
+
+  idUtilisateur = this.props.param1;
+  fetch('http://192.168.0.96:1337/Sauvegarder/Evenements', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:idEvents, idUtilisateurSauvegarder: idUtilisateur})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+ data2 = this.state.items.slice(index+1).concat(this.state.items.slice(0,index));
+
+
+   this.setState({items:data2});
+
+ToastAndroid.show('evenements sauvegarder', ToastAndroid.SHORT);
+   if(this.state.items.length == 0) {
+    this.setState({soory:true})
+    Actions.soory()
+   }
+
+})
+.catch((err) => { console.log(err); });
+
+
+}
+
 
   closeDrawer() {
       this._drawer._root.close()
@@ -225,24 +239,22 @@ openDrawer() {
         onClose={() => this.closeDrawer()} 
 
         >
-      
-       
+         <AppFooter pdp={this.props.param2} id={this.props.param1}/> 
       <Container>
-   <AppFooter pdp={this.props.param2} id={this.props.param1}/> 
+
       <Swiper showsPagination={false}>
         {this.state.items.map((item, key) => {
           return (
             <View key={key} >
               
        
-           <List style={{marginTop:0}}>
+           <List style={{marginTop:20}}>
             <ListItem avatar style={{alignSelf:'center'}}>
-              <CardItem>
-                <Image source={{uri:item.logo}} style={{height: 150, width: null, flex: 1}}/>
-
-            </CardItem>
+              
+                <Image source={{uri:item.photoEvenement[0]}} style={{height:150, width:250, alignSelf:'center' }}/>
+        
                               </ListItem>
-         <Text style= {{color:"#0e76a8", alignSelf:'center' }} onPress={function(){ this.infoOffres(item.id) }.bind(this) } > {item.titreEmploi.toUpperCase()} </Text>
+         <Text style= {{color:"#0e76a8", alignSelf:'center' }} onPress={function(){ this.infoOffres(item.id) }.bind(this) } > {item.nomEvenement.toUpperCase()} </Text>
               
 
               <ListItem>
@@ -250,10 +262,12 @@ openDrawer() {
                
                 
 
-                <Text note> <MyIcon name="map-marker" /> &nbsp; {item.adresse[0].ville} </Text> 
+                <Text note> <MyIcon name="map-marker" /> &nbsp; {item.lieuEvenement} </Text> 
 
-                <Text><MyIcon name="table" /> &nbsp;{item.typeContrat}</Text>
-                <Text style={{marginTop:12}}> <MyIcon name="clock-o" /> &nbsp;{item.dateLimite} </Text>
+                <Text><MyIcon name="table" /> &nbsp;{item.genreEvenement}</Text>
+                <Text style={{marginTop:12}}> <MyIcon name="circle-o-notch" /> &nbsp;{item.categorieEvenement} </Text>
+                    <Text style={{marginTop:12}}> <MyIcon name="clock-o" /> &nbsp;{item.dateDebut} </Text>
+                    <Text style={{marginTop:12}}> <MyIcon name="clock-o" /> &nbsp;{item.heureDebut} </Text>
               </Body>
           
             </ListItem>
@@ -270,7 +284,7 @@ openDrawer() {
 
 
 <Text>
-<MyIcon name="bookmark-o" /> &nbsp;{item.domaine} &nbsp; <MyIcon name="folder-open-o" onPress={function(){ this.infoInstitutions(item.idInstitution,item.logo) }.bind(this) } />&nbsp;<Text onPress={function(){ this.infoInstitutions(item.idInstitution,item.logo) }.bind(this) } >{item.nomInstitution} </Text>
+<MyIcon name="bookmark-o" /> &nbsp;{item.diplomeDeLivre} &nbsp; <MyIcon name="folder-open-o" />&nbsp;{item.nomInstitution} 
 </Text>
 </Body>
 </Left>
@@ -278,9 +292,6 @@ openDrawer() {
 
 
 
-<CardItem>
-<Text> tags d'emploie {item.tagsEmploi}  </Text> 
-</CardItem>
 
      <View
   style={{

@@ -61,7 +61,7 @@ this.state={
 
   getDonnesUtilisateurs(){
 
-  return fetch('http://192.168.57.1:1337/lireTags').
+  return fetch('http://192.168.0.96:1337/lireTags').
   then((Response)=>Response.json()).
   then((data)=>
 
@@ -472,7 +472,7 @@ pick((source,dataimage )=> this.setState({avatarSource:source, dataimage:dataima
 upload() {
 
 this.setState({loading:true})
-RNFetchBlob.fetch('POST', 'http://192.168.57.1:1337/testtest', {
+RNFetchBlob.fetch('POST', 'http://192.168.0.96:1337/testtest', {
 Authorization : "Bearer access-token",
 otherHeader : "foo",
     'Content-Type' : 'multipart/form-data',
@@ -507,7 +507,7 @@ var year = daty.substring(daty.lastIndexOf("-")+1)
 var essaie = urlUpload.substr(this.href.lastIndexOf('/') + 1);
  this.setState({essaie:essaie});
 
-fetch('http://192.168.57.1:1337/utilisateurs/Inscrire', {
+fetch('http://192.168.0.96:1337/utilisateurs/Inscrire', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
@@ -563,7 +563,7 @@ RNFetchBlob.fetch('GET', this.state.url, {
 }
 login = () => {
   
-     fetch('http://192.168.57.1:1337/utilisateurs/Inscrire', {
+     fetch('http://192.168.0.96:1337/utilisateurs/Inscrire', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',

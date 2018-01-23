@@ -32,7 +32,7 @@ this.state={
 getDonnesUtilisateurs(){
 
 var id = this.props.param1;
-return fetch('http://192.168.57.1:1337/Informations/Utilisateur?id='+id)
+return fetch('http://192.168.0.96:1337/Informations/Utilisateur?id='+id)
 .then((response)=> response.json())
 .then((responseJson)=>{
 var datasend=JSON.stringify(responseJson.utilisateur);
@@ -57,7 +57,7 @@ getDonnesOffres(){
 var id = this.props.param1;
 
 
-  return fetch('http://192.168.57.1:1337/Acceuils/Utilisateurs?id='+id)
+  return fetch('http://192.168.0.96:1337/Acceuils/Utilisateurs?id='+id)
     .then(response => response.json())
     .then(responseJson => {
 

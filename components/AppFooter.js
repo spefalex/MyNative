@@ -31,11 +31,16 @@ export default class AppFooter extends Component {
   this.verifFiltre();
  
 }
+ goHome(pdp,id) {
+
+Actions.acceuil2({param1:id, param2:pdp, prenom:this.props.prenom});
+
+ }
 
 getMenu(pdp,id) {
 
 
-  Actions.menuList({pdp:pdp, id:id})
+  Actions.menuList({pdp:pdp, id:id, prenom:this.props.prenom})
 }
 
 getEmploiesSauvegarde(idUtisateur) {
@@ -44,9 +49,9 @@ Actions.offreSave({param1:idUtisateur});
 
 } 
 
-filtreEmploie () {
+filtreEmploie (idUtisateur) {
 
-  Actions.filtre();
+  Actions.filtre({param1:idUtisateur});
 }
 verifFiltre() {
 
@@ -105,7 +110,7 @@ else if(this.props.filtre == 'rencontre feat emploies feat formation') {
         <Footer>
           <FooterTab>
             <Button vertical>
-              <MyIcon name='sliders' size = {25}  color="#5dade2" onPress={this.filtreEmploie} />
+              <MyIcon name='sliders' size = {25}  color="#5dade2" onPress={this.filtreEmploie.bind(this,this.props.id)} />
         
             </Button>
 
@@ -115,7 +120,7 @@ else if(this.props.filtre == 'rencontre feat emploies feat formation') {
               
             </Button>
             <Button vertical>
-              <MyIcon name='home' size = {25} color="#a569bd" />
+              <MyIcon name='home' size = {25} color="#a569bd"  onPress= {this.goHome.bind(this,this.props.pdp,this.props.id)} />
             
             </Button>
             <Button >

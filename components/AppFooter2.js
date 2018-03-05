@@ -24,34 +24,35 @@ export default class AppFooter extends Component {
 
     }
 
+
+
     componentWillReceiveProps() {
 
   this.verifFiltre();
  
 }
- test() {
-
-  alert("formation")
- }
  goHome(pdp,id) {
-
 
 Actions.acceuil({param1:id, param2:pdp, prenom:this.props.prenom});
 
  }
 
- getMenu(pdp,id) {
+getMenu(pdp,id) {
 
 
-  Actions.menuList({pdp:pdp, id:id,prenom:this.props.prenom})
+  Actions.menuList({pdp:pdp, id:id, prenom:this.props.prenom})
 }
 
-
-getFormationSauvegarde(idUtisateur) {
+getEmploiesSauvegarde(idUtisateur) {
 
 Actions.offreSave({param1:idUtisateur});
 
 } 
+
+filtreEmploie (idUtisateur) {
+
+  Actions.filtre({param1:idUtisateur});
+}
 verifFiltre() {
 
 if(this.props.filtre == 'rencontre feat emploies') {
@@ -109,31 +110,32 @@ else if(this.props.filtre == 'rencontre feat emploies feat formation') {
         <Footer>
           <FooterTab>
             <Button vertical>
-              <MyIcon name='sliders' size = {25}  color="#5dade2" />
+              <MyIcon name='sliders' size = {25}  color="#5dade2" onPress={this.filtreEmploie.bind(this,this.props.id)} />
         
             </Button>
+
+             
              <Button vertical>
-              <MyIcon name='check-circle-o' size = {25}  color="#5dade2" onPress={this.test.bind(this,this.props.id)}/>
+              <MyIcon name='check-circle-o' size = {25}  color="#5dade2" onPress={this.getEmploiesSauvegarde.bind(this,this.props.id)}/>
               
             </Button>
             <Button vertical>
-              <MyIcon name='home' size = {25} color="#a569bd" onPress= {this.goHome.bind(this,this.props.pdp,this.props.id)}/>
+              <MyIcon name='home' size = {25} color="#a569bd"  onPress= {this.goHome.bind(this,this.props.pdp,this.props.id)} />
             
             </Button>
-             
             <Button >
               <MyIcon name="star-o" size = {25} color="#28b463" />
         
             </Button>
+              
             <Button vertical>
               <MyIcon name="comments" size= {25} />
             </Button>
 
-             <Button >
+                <Button >
               <Icon name="menu" size = {25} color="#28b463" onPress= {this.getMenu.bind(this,this.props.pdp,this.props.id)} />
         
             </Button>
-
           </FooterTab>
         </Footer>
     

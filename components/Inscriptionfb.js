@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image , AsyncStorage, StyleSheet, View, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
 import TagInput from 'react-native-tag-input';
 import { Router, Scene, Actions} from 'react-native-router-flux';
-import { Container, Header, Content, Form, Item, Input ,Button, Text, Thumbnail, Icon , Body ,InputGroup, Card ,Spinner,CheckBox} from 'native-base';
+import { Container, Header, Content, Form, Item, Input ,Button, Text, Thumbnail, Icon , Body ,InputGroup, Card ,Spinner,CheckBox,List,ListItem} from 'native-base';
 import AutoTags from 'react-native-tag-autocomplete';
 import UtilisateursFb from './UtilisateursFb';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -25,8 +25,9 @@ this.state={
   prenomUtilisateur:'',
   sexe:'',
   centre:[],
+  trueSexe:'',
   loading:false,
- ConfirmmotDePasse:'',
+  ConfirmmotDePasse:'',
   numeroMobile:'',
   adresseMail:'',
   motDePasse:'',
@@ -34,6 +35,7 @@ this.state={
   localisation:'',
   poste:'',
   nomSociete:'',
+
   diplome:'',
   filiere:'',
   nomEtablissement:'',
@@ -48,7 +50,9 @@ this.state={
 
   tags: '',
 
-  urlhome:''
+  urlhome:'',
+  checked:false,
+  checked1:false,
 
   
     }
@@ -118,7 +122,17 @@ style={{width:400, height:200}}
 
 }
 
+checkboxTest(value) {
 
+  this.setState({checked:!this.state.checked , checked1:false })
+
+
+}
+
+checkbox1 () {
+this.setState({ checked1:!this.state.checked1, checked:false})
+
+}
 getDonnesUtilisateurFb(){
 
 var id =this.props.param;
@@ -126,7 +140,7 @@ return fetch('https://graph.facebook.com/v2.11/me?fields=email,name,birthday,pic
 .then((response)=> response.json())
 .then((responseJson)=>{
 var datasend= JSON.stringify(responseJson);
-alert(responseJson.picture.data.url.toString());
+
 var nom = responseJson.name.toString();
 var url = responseJson.picture.data.url.toString();
 
@@ -150,7 +164,7 @@ renderButton(){
 
   return (
 
- <Button block warning  onPress={this.upload.bind(this)} >
+ <Button block warning  onPress={function(){ this.upload(this.state.checked,this.state.checked1) }.bind(this) } >
             <Text>Sauvegarder</Text>
 
           </Button>
@@ -276,8 +290,27 @@ handleDelete = index => {
             </Item>
             <Item last>
              <MyIcon name="transgender" size= {20} />
-              <Input placeholder="sexe" onChangeText={(sexe)=>this.setState({sexe})} value={this.state.sexe}/>
+            <Text> Sexe: </Text>
+
             </Item>
+
+            <Item>
+  <List style={{flexDirection:'column', flexWrap: 'wrap', alignItems: 'flex-start' ,flexDirection:'row'}}>
+
+  <Text> Homme </Text>
+            <ListItem>
+              <CheckBox checked={this.state.checked} onPress= {()=>this.checkboxTest()}/>
+            </ListItem>
+  <Text>  Femme </Text>
+            <ListItem>
+                <CheckBox checked={this.state.checked1} onPress= {()=>this.checkbox1()}/> 
+            </ListItem>
+
+  
+          </List>     
+  </Item>
+
+
             <Item last>
            
         <DatePicker
@@ -474,8 +507,39 @@ pick((source,dataimage )=> this.setState({avatarSource:source, dataimage:dataima
 
 
 
-upload() {
+upload(male,female) {
 
+if(male == true && female ==false) {
+
+  this.setState({trueSexe:'male'})
+} else {this.setState({trueSexe:'female'})}
+
+
+var tagsValue = JSON.stringify(this.state.tagsSelected);
+
+var count = this.state.tagsSelected.length;
+
+var liste = [];
+for(var i =0; i<count; i++)
+
+{
+  var tagsPeople = this.state.tagsSelected[i].nomTags;
+ 
+ liste.push(tagsPeople).toString();
+
+}
+
+this.setState({centre:JSON.stringify(liste)})
+
+
+
+var tagis = liste.toString();
+
+var daty = this.state.date;
+var year = daty.substring(daty.lastIndexOf("-")+1);
+
+
+if(this.state.dataimage) {
 this.setState({loading:true})
 RNFetchBlob.fetch('POST', 'http://192.168.0.96:1337/testtest', {
 Authorization : "Bearer access-token",
@@ -490,32 +554,17 @@ otherHeader : "foo",
     .then((response) => JSON.stringify(response.json())) 
 .then((responseData) => {
 
-     var tagsValue = JSON.stringify(this.state.tagsSelected);
 
-     var count = this.state.tagsSelected.length;
 
-var liste = [];
-for(var i =0; i<count; i++)
 
-{
-  var tagsPeople = this.state.tagsSelected[i].nomTags;
- 
- liste.push(tagsPeople).toString();
-//  var kamehameha = tagsPeople.split(" ");
-}
-
-this.setState({centre:JSON.stringify(liste)})
-
-//alert(this.state.centre)
-
-var tagis = liste.toString();
-
-alert(tagis)
       
 var urlUpload=responseData.toString().replace(/"/g, "");
 var urlOfIMAGE = 'http://192.168.0.96/IMAGES/'+urlUpload.substr(urlUpload.lastIndexOf('/') + 1);
-var daty = this.state.date;
-var year = daty.substring(daty.lastIndexOf("-")+1)
+
+
+
+
+
 
 fetch('http://192.168.0.96:1337/utilisateurs/Inscrire', {
   method: 'POST',
@@ -523,7 +572,7 @@ fetch('http://192.168.0.96:1337/utilisateurs/Inscrire', {
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({nomUtilisateur: this.state.nom,prenomUtilisateur:this.state.prenomUtilisateur, centreInteret:tagis, adresseMail:this.state.adresseMail, photoUtilisateur:urlOfIMAGE, localisation:this.state.localisation, anneNaissance:year,nomSociete:this.state.nomSociete,poste:this.state.poste, numeroMobile: this.state.numeroMobile, nomEtablissement:this.state.nomEtablissement, sexe:this.state.sexe,diplome:this.state.diplome, motDePasse:this.state.motDePasse})
+  body: JSON.stringify({nomUtilisateur: this.state.nom,prenomUtilisateur:this.state.prenomUtilisateur, centreInteret:tagis, adresseMail:this.state.adresseMail, photoUtilisateur:urlOfIMAGE, localisation:this.state.localisation, anneNaissance:year,nomSociete:this.state.nomSociete,poste:this.state.poste, numeroMobile: this.state.numeroMobile, nomEtablissement:this.state.nomEtablissement, sexe:this.state.trueSexe,diplome:this.state.diplome, motDePasse:this.state.motDePasse})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
@@ -549,6 +598,46 @@ Actions.confirmation({param1:responseData.idUtilisateur});
     console.log(err);
     
   });
+} 
+
+//load image direc
+
+else {
+
+alert('fb')
+
+this.setState({loading:true})
+
+     fetch('http://192.168.0.96:1337/utilisateurs/Inscrire', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({nomUtilisateur: this.state.nom,prenomUtilisateur:this.state.prenomUtilisateur, centreInteret:tagis, adresseMail:this.state.adresseMail, photoUtilisateur:this.state.url, localisation:this.state.localisation, anneNaissance:year,nomSociete:this.state.nomSociete,poste:this.state.poste, numeroMobile: this.state.numeroMobile, nomEtablissement:this.state.nomEtablissement, sexe:this.state.trueSexe,diplome:this.state.diplome, motDePasse:this.state.motDePasse})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+ 
+ 
+ this.setState({loading:false})
+if(responseData.message == 'email de confirmation'){
+
+  
+Actions.confirmation({param1:responseData.idUtilisateur});
+} else  {
+
+  alert(responseData.message);
+}
+
+
+
+
+
+ })
+.catch((err) => { console.log(err); });
+
+}
 
 }
 

@@ -87,7 +87,7 @@ Actions.soory()
 
  infoOffres(idOffre) {
 
-Actions.detailsOffres({param1:idOffre, idUser:this.props.param1 ,pdp:this.props.param2});
+Actions.detailsOffres({param1:idOffre, idUser:this.props.param1 ,pdp:this.props.param2, prenom:this.props.prenom});
  }
  getFiltreUtilisateurs(){
 
@@ -228,7 +228,7 @@ openDrawer() {
       
        
       <Container>
-   <AppFooter pdp={this.props.param2} id={this.props.param1}/> 
+   <AppFooter pdp={this.props.param2} id={this.props.param1} prenom={this.props.prenom}/> 
       <Swiper showsPagination={false}>
         {this.state.items.map((item, key) => {
           return (
@@ -279,7 +279,7 @@ openDrawer() {
 
 
 <CardItem>
-<Text> tags d'emploie {item.tagsEmploi}  </Text> 
+<Text> <MyIcon name="tags" /> &nbsp; {item.tagsEmploi.toString()}  </Text>
 </CardItem>
 
      <View

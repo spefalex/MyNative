@@ -148,7 +148,7 @@ return(
  <Footer>
           <FooterTab>
             <Button full onPress={function(){ this.donneAvis(this.props.pdp,this.props.idUser, this.props.prenom, this.props.param1, this.props.logo) }.bind(this)}>
-              <Text >donneAvis </Text>
+              <Text >donner vos avis </Text>
             </Button>
           </FooterTab>
         </Footer>

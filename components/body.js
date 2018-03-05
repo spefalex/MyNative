@@ -58,7 +58,7 @@ export default class AppBody extends Component {
      </Text>
 </TouchableOpacity>
 
-<TouchableOpacity onPress={Actions.finale}>
+<TouchableOpacity onPress={Actions.descriformation}>
      <Text style={styles.inscrire}>
     Mot de passe oublié 
      </Text>

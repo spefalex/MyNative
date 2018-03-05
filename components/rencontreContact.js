@@ -116,107 +116,26 @@ if(this.state.soory == true)
 return(<AppSoory/>)
 
 }
-  test(){
-
-    alert("a");
-  }
-ignorer(idOffres,index)
-{
-
- 
-
-  idUtilisateur = this.props.param1;
-  fetch('http://192.168.0.96:1337/Ignorer/Offre', {
-  method: 'POST',
-  headers: { 
-           'Accept': 'application/json',
-           'Content-Type': 'application/json' 
-           },
-  body: JSON.stringify({idOffreEmploi:idOffres, idUtilisateur: idUtilisateur})
-})
-.then((response) => response.json()) 
-.then((responseData) => {
-
-
-  data2 = this.state.data.slice(index+1).concat(this.state.data.slice(0,index));
-
-
-   this.setState({data:data2})
-ToastAndroid.show('emplois ignorer', ToastAndroid.SHORT);
-   if(this.state.data.length == 0) {
-
-    this.setState({soory:true})
-   }
   
 
-})
-.catch((err) => { console.log(err); });
-
-
-}
-infoUtilisateurs(idUtilisateurs) {
-
-Actions.detailsContact({param1:idUtilisateurs,maitre:this.props.param1,pdp:this.props.param2});
- }
-sauvegarder(idOffres,index)
-{
- 
-
-  idUtilisateur = this.props.param1;
-  fetch('http://192.168.0.96:1337/Sauvegarder/Offre', {
-  method: 'POST',
-  headers: { 
-           'Accept': 'application/json',
-           'Content-Type': 'application/json' 
-           },
-  body: JSON.stringify({idOffreEmploi:idOffres, idUtilisateur: idUtilisateur})
-})
-.then((response) => response.json()) 
-.then((responseData) => {
-
-
-  data2 = this.state.data.slice(index+1).concat(this.state.data.slice(0,index));
-
-
-   this.setState({data:data2});
-ToastAndroid.show('emplois sauvegarder', ToastAndroid.SHORT);
-   if(this.state.data.length == 0) {
-    this.setState({soory:true})
-   }
-  
-
-})
-.catch((err) => { console.log(err); });
-
-
-}
-participe(idOffres,index)
+chatMessages(idUser2,index)
 {
  
  
 
   idUtilisateur = this.props.param1;
-  fetch('http://192.168.0.96:1337/Participe/Formation', {
+  fetch('http://192.168.0.96:1337/read/Convsa', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({idOffres:idOffres, idUtilisateur: idUtilisateur})
+  body: JSON.stringify({idUser1:idUtilisateur, idUser2: idUser2})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
 
-
-  data2 = this.state.data.slice(index+1).concat(this.state.data.slice(0,index));
-
-ToastAndroid.show('Formation ajouter', ToastAndroid.SHORT);
-   this.setState({data:data2})
-
-   if(this.state.data.length == 0) {
-
-    this.setState({soory:true})
-   }
+ Actions.misa({responseData:responseData[0].Conversation,idUser1:idUtilisateur,idUser2:idUser2, idConvsa:responseData[0].id, idMaitre:this.props.param1})
   
 
 })
@@ -250,7 +169,7 @@ return (
          
     
             
-  <Text style={{fontSize:16,color:"#00ffaa" }} onPress={function(){ this.accepteRencontre(usaka.id,index) }.bind(this) }> <MyIcon name="wechat" size = {16} color="#00ffaa" /> Chat </Text>
+  <Text style={{fontSize:16,color:"#00ffaa" }} onPress={function(){ this.chatMessages(usaka.id,index) }.bind(this) }> <MyIcon name="wechat" size = {16} color="#00ffaa" /> Chat </Text>
           </Right>
           
             </ListItem>

@@ -22,7 +22,7 @@ import MyIcon from 'react-native-vector-icons/FontAwesome';
 
 import Swiper from 'react-native-swiper';
 import { Router, Scene, Actions} from 'react-native-router-flux';
-import FooterRencontre from './FooterDetailsRencontre';
+import FooterUser from './FooterUser';
 
 export default class MyNative extends Component {
 
@@ -39,8 +39,8 @@ nomSociete:'',
 nombre:'',
 diplome:'',
 nomEtablissment:'',
-centreInteret:'', 
-typeRencontre:''
+tags:'',
+typeRencontreAffiche:'',
 
   
   
@@ -72,12 +72,13 @@ alert("acune evenements correspond a votre centre interet")
 }
  else  {
 
+//  alert(responseJson.offre.sauvegardeEmploi.length)
 var tags = responseJson.users.centreInteret;
 var typeRencontre = responseJson.users.typeRencontre;
 var finale = tags.toString();
-var finale2 = typeRencontre.toString();
+var typeRenco= typeRencontre.toString();
 
- this.setState({data:responseJson.users, nomSociete:responseJson.users.informationEmploie[0].nomSociete, poste:responseJson.users.informationEmploie[0].poste,nombre:responseJson.users.utilisateurMatcher.length,diplome:responseJson.users.derniereFormation[0].diplome,nomEtablissment:responseJson.users.derniereFormation[0].nomEtablissement,centreInteret:finale, typeRencontre:finale2})
+ this.setState({data:responseJson.users, nomSociete:responseJson.users.informationEmploie[0].nomSociete, poste:responseJson.users.informationEmploie[0].poste,nombre:responseJson.users.utilisateurMatcher.length,diplome:responseJson.users.derniereFormation[0].diplome,nomEtablissment:responseJson.users.derniereFormation[0].nomEtablissement,tags:finale,typeRencontreAffiche:typeRenco})
 
 
 
@@ -114,7 +115,6 @@ var finale2 = typeRencontre.toString();
             <CardItem cardBody>
               <Image source={{uri:this.state.data.photoUtilisateur}} style={{height: 200, width: null, flex: 1}}/>
             </CardItem>
-
             <CardItem>
          
             
@@ -125,12 +125,34 @@ var finale2 = typeRencontre.toString();
               </Body>
          
             </CardItem>
-<CardItem>
-<Text> <MyIcon name="tags" /> &nbsp; {this.state.centreInteret}  </Text>
-</CardItem>
-<CardItem>
-<Text> <MyIcon name="child" /> &nbsp; {this.state.typeRencontre}  </Text>
-</CardItem>
+   <CardItem>
+              <Body>
+                <Text>
+          <MyIcon name="mobile-phone" size = {20}/> &nbsp;{this.state.data.numeroMobile}
+                </Text>
+              </Body> 
+            </CardItem>
+             <CardItem>
+              <Body>
+                <Text>
+          <MyIcon name="envelope-o" size = {20}/> &nbsp;{this.state.data.adresseMail}
+                </Text>
+              </Body> 
+            </CardItem>
+              <CardItem>
+              <Body>
+                <Text>
+          <MyIcon name="child" size = {20}/> &nbsp; {this.state.typeRencontreAffiche}
+                </Text>
+              </Body>
+            </CardItem>
+             <CardItem>
+              <Body>
+                <Text>
+          <MyIcon name="tags" size = {20}/> &nbsp;{this.state.tags}
+                </Text>
+              </Body> 
+            </CardItem>
              <CardItem>
               <Body>
                 <Text>
@@ -138,9 +160,10 @@ var finale2 = typeRencontre.toString();
                 </Text>
               </Body>
             </CardItem>
+           
           </Card>
         </Content>
-         <FooterRencontre idUserIgnorer={this.state.data.id} idUserMaitre={this.props.maitre} pdp={this.props.pdp} prenom={this.props.prenom}/>
+        <FooterUser/>
       </Container>
     );
   }

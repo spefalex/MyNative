@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Image , AsyncStorage, StyleSheet, View, TextInput, TouchableHighlight, TouchableOpacity} from 'react-native';
+import { Image , AsyncStorage, StyleSheet, View, TextInput, TouchableHighlight, TouchableOpacity, ToastAndroid} from 'react-native';
 import TagInput from 'react-native-tag-input';
 import { Router, Scene, Actions} from 'react-native-router-flux';
 import { Container, Header,Body, Content, Form, Item, Input ,Button, Text, Thumbnail, Icon ,CheckBox, InputGroup, List , Card ,Spinner, ListItem} from 'native-base';
 import AutoTags from 'react-native-tag-autocomplete';
 
 import MyIcon from 'react-native-vector-icons/FontAwesome';
+
 
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -25,10 +26,12 @@ this.state={
   checked1:false,
   cdi:'false',
   checked2:false,
-   localisation:'',
+  localisation:'',
   tagsSelected: [],
   text:'',
   tags: '',
+
+  centre:''
 
   
 
@@ -66,21 +69,231 @@ this.setState({checked2:!this.state.checked2})
     )
 }
   findFiltre(cdd,cdi,stage) {
+var id =this.props.param1;
+
+var liste = [];
+ var count = this.state.tagsSelected.length;
+for(var i =0; i<count; i++)
+
+{
+  var tagsPeople = this.state.tagsSelected[i].nomTags;
+ 
+ liste.push(tagsPeople).toString();
+
+}
+
+this.setState({centre:JSON.stringify(liste)})
+var tagis = liste.toString();
 
   if(cdd == true && cdi == false && stage==false) {
 
-    alert("cdd")
+  fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:'cdd'})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
   }
-else if (cdd==true && cdi==true && stage ==false ) {alert("cdd + cdi")} 
 
-else if(stage ==true && cdi==true && cdd ==true) {alert("read all")}
+  
+
+})
+.catch((err) => { console.log(err); });
+
+
+
+
+
+   
+  }
+else if (cdd==true && cdi==true && stage ==false ) {
+
+fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:'cdd,cdi'})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
+  }
+
+  
+
+})
+.catch((err) => { console.log(err); });
+
+
+  } 
+
+else if(stage ==true && cdi==true && cdd ==true) {
+
+fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:'stage,cdi,cdd'})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
+  }
+
+  
+
+})
+.catch((err) => { console.log(err); });
+
+
+}
  
-else if(cdd==false && cdi ==true && stage==true) { alert("cdi+stage")} 
+else if(cdd==false && cdi ==true && stage==true) {
 
-else if(cdd == false && cdi == true && stage==false) {alert("cdi")}
-else if(cdd == false && cdi == false && stage==true) {alert("stage")}
-else if(cdd == false && cdi == false && stage==false) {alert("false all")}
-else if(cdd == true && cdi == false && stage==true) {alert("cdd + stage")}  
+fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:'cdi,stage'})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
+  }
+  
+
+})
+.catch((err) => { console.log(err); });
+
+} 
+
+else if(cdd == false && cdi == true && stage==false) {
+
+fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:'cdi'})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
+  }
+
+  
+
+})
+.catch((err) => { console.log(err); });
+
+
+}
+else if(cdd == false && cdi == false && stage==true) {
+
+fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:'stage'})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
+  }
+
+  
+
+})
+.catch((err) => { console.log(err); });
+
+}
+else if(cdd == false && cdi == false && stage==false) {
+fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:''})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
+  }
+
+})
+.catch((err) => { console.log(err); });
+
+}
+else if(cdd == true && cdi == false && stage==true) {
+
+fetch('http://192.168.0.96:1337/Filtre/Emplois', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({id:id, centreInteret: tagis, typeContrat:'cdd,stage'})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+if(responseData.message) {ToastAndroid.show('Aucune résultats correspondre à votre critere', ToastAndroid.SHORT);} else  {
+Actions.resEmploies({data:responseData.emploies})
+
+  }
+
+  
+
+})
+.catch((err) => { console.log(err); });
+
+} 
+
+
+ 
 
   } // fin fct
 
@@ -90,6 +303,13 @@ componentWillMount(){
 
 
 this.getDonnesUtilisateurs();
+
+}
+
+requete() {
+
+var typeContrat= findFiltre()
+ alert(typeContrat)
 
 }
 

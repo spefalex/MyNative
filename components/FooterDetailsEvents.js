@@ -29,7 +29,7 @@ export default class FooterDetailsOffres extends Component {
 
     }
 
-ignorer(idUtilisateur,idOffres)
+ignorer(idUtilisateur,idEvents)
 {
 
  
@@ -41,7 +41,7 @@ ignorer(idUtilisateur,idOffres)
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({idOffreEmploi:idOffres, idUtilisateur: idUtilisateur})
+  body: JSON.stringify({idOffreEmploi:idEvents, idUtilisateur: idUtilisateur})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
@@ -52,7 +52,7 @@ ToastAndroid.show('emplois ignorer', ToastAndroid.SHORT);
 
 
 
-Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp,prenom:this.props.prenom});
+Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp});
 
 
   
@@ -65,7 +65,7 @@ Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp,prenom:this.pro
 }
 
 
-sauvegarder(idUtilisateur,idOffres)
+sauvegarder(idUtilisateur,idEvents)
 {
 
  
@@ -77,7 +77,7 @@ sauvegarder(idUtilisateur,idOffres)
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({idOffreEmploi:idOffres, idUtilisateur: idUtilisateur})
+  body: JSON.stringify({idOffreEmploi:idEvents, idUtilisateur: idUtilisateur})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
@@ -88,7 +88,7 @@ ToastAndroid.show('emplois sauvegarder', ToastAndroid.SHORT);
 
 
 
-Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp,prenom:this.props.prenom});
+Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp});
 
 
   

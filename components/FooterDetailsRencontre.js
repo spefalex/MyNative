@@ -49,7 +49,7 @@ ignorer(idUserMaitre, idIgnorer)
 
 
 ToastAndroid.show(' ignorer', ToastAndroid.SHORT);
-Actions.rencontre({param1:this.props.idUserMaitre, param2:this.props.pdp});
+Actions.rencontre({param1:this.props.idUserMaitre, param2:this.props.pdp,prenom:this.props.prenom});
 
    if(this.state.items.length == 0) {
 
@@ -88,7 +88,7 @@ demandeRencontre(idUserMaitre, idDemande)
 
 ToastAndroid.show('Demande envoyé', ToastAndroid.SHORT);
  
-Actions.rencontre({param1:this.props.idUserMaitre, param2:this.props.pdp});
+Actions.rencontre({param1:this.props.idUserMaitre, param2:this.props.pdp,prenom:this.props.prenom});
    if(this.state.items.length == 0) {
     this.setState({soory:true})
     Actions.soory()
@@ -126,7 +126,7 @@ ToastAndroid.show('emplois sauvegarder', ToastAndroid.SHORT);
 
 
 
-Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp});
+Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp,prenom:this.props.prenom});
 
 
   

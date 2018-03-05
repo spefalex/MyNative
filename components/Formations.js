@@ -36,7 +36,7 @@ getData () {
 var id= this.props.param1;
 var pdp = this.props.param2;
 
-alert(id)
+
  return fetch('http://192.168.0.96:1337/Acceuils/Formations?id='+id)
     .then(response => response.json())
     .then(responseJson => {
@@ -65,9 +65,9 @@ Actions.soory()
 
 
 
- infoOffres(idOffre) {
+ infoOffres(idFormations) {
 
-Actions.detailsOffres({param1:idOffre});
+Actions.descriformation({param1:idFormations});
  }
  getFiltreUtilisateurs(){
 
@@ -82,7 +82,7 @@ var pdp = this.props.param2;
 
       this.setState({filtre:responseJson.message})
 
-      alert(this.state.filtre)
+    
    
     })
     .catch(error => {
@@ -240,7 +240,7 @@ openDrawer() {
         onClose={() => this.closeDrawer()} 
 
         >
-         <AppFooter pdp={this.props.param2} id={this.props.param1}/> 
+         <AppFooter pdp={this.props.param2} id={this.props.param1} prenom={this.props.prenom}/> 
       <Container>
 
       <Swiper showsPagination={false}>
@@ -292,8 +292,9 @@ openDrawer() {
 
 
 
+
 <CardItem>
-<Text> tags d'emploie {item.tagsFormation}  </Text> 
+<Text> <MyIcon name="tags" /> &nbsp; {item.tagsFormation.toString()}  </Text>
 </CardItem>
 
      <View

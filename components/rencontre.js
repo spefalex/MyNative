@@ -35,7 +35,7 @@ export default class extends Component {
 var id= this.props.param1;
 var pdp = this.props.param2;
 
-alert(id)
+
  return fetch('http://192.168.0.96:1337/Acceuils/Rencontre?id='+id)
     .then(response => response.json())
     .then(responseJson => {
@@ -147,7 +147,7 @@ ToastAndroid.show(' ignorer', ToastAndroid.SHORT);
 
    infoUtilisateurs(idUtilisateurs) {
 
-Actions.detailsRencontre({param1:idUtilisateurs,maitre:this.props.param1,pdp:this.props.param2});
+Actions.detailsRencontre({param1:idUtilisateurs,maitre:this.props.param1,pdp:this.props.param2,prenom:this.props.prenom});
  }
 
   closeDrawer() {
@@ -167,7 +167,7 @@ openDrawer() {
         onClose={() => this.closeDrawer()} 
 
         >
-         <AppFooter pdp={this.props.param2} id={this.props.param1}/> 
+         <AppFooter pdp={this.props.param2} id={this.props.param1} prenom={this.props.prenom}/> 
       <Container>
 
       <Swiper showsPagination={false}>

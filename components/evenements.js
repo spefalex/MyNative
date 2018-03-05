@@ -25,7 +25,8 @@ export default class extends Component {
       this.state={
 
  items: [],
- soory:false
+ soory:false,
+ prenom:''
 
   
   
@@ -36,7 +37,7 @@ getData () {
 var id= this.props.param1;
 var pdp = this.props.param2;
 
-alert(id)
+
  return fetch('http://192.168.0.96:1337/Acceuils/Evenements?id='+id)
     .then(response => response.json())
     .then(responseJson => {
@@ -65,9 +66,9 @@ Actions.soory()
 
 
 
- infoOffres(idOffre) {
+ infoEvenements(idEvents) {
 
-Actions.detailsOffres({param1:idOffre});
+Actions.detailsEvents({param1:idEvents});
  }
  getFiltreUtilisateurs(){
 
@@ -82,7 +83,7 @@ var pdp = this.props.param2;
 
       this.setState({filtre:responseJson.message})
 
-      alert(this.state.filtre)
+     
    
     })
     .catch(error => {
@@ -239,7 +240,7 @@ openDrawer() {
         onClose={() => this.closeDrawer()} 
 
         >
-         <AppFooter pdp={this.props.param2} id={this.props.param1}/> 
+         <AppFooter pdp={this.props.param2} id={this.props.param1} prenom={this.props.prenom}/> 
       <Container>
 
       <Swiper showsPagination={false}>
@@ -254,7 +255,7 @@ openDrawer() {
                 <Image source={{uri:item.photoEvenement[0]}} style={{height:150, width:250, alignSelf:'center' }}/>
         
                               </ListItem>
-         <Text style= {{color:"#0e76a8", alignSelf:'center' }} onPress={function(){ this.infoOffres(item.id) }.bind(this) } > {item.nomEvenement.toUpperCase()} </Text>
+         <Text style= {{color:"#0e76a8", alignSelf:'center' }} onPress={function(){ this.infoEvenements(item.id) }.bind(this) } > {item.nomEvenement.toUpperCase()} </Text>
               
 
               <ListItem>
@@ -284,7 +285,10 @@ openDrawer() {
 
 
 <Text>
-<MyIcon name="bookmark-o" /> &nbsp;{item.diplomeDeLivre} &nbsp; <MyIcon name="folder-open-o" />&nbsp;{item.nomInstitution} 
+ <MyIcon name="folder-open-o" />&nbsp;{item.nomInstitution} 
+</Text>
+<Text>
+<MyIcon name="tags" /> &nbsp;{item.tagsEvenements.toString()}
 </Text>
 </Body>
 </Left>

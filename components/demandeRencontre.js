@@ -102,9 +102,7 @@ var pdp = this.props.param2;
    
   }
 
-
-
-   componentWillMount() {
+componentWillMount() {
 
 this.socket.on("server-send",function(data){
 e.setState({info:data})

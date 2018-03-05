@@ -46,33 +46,42 @@ export default class CardListExample extends Component {
   this.verifFiltre();
  
 }
+ getOut () {
 
+Actions.out();
+
+
+ }
     getDataFormations(idaka,pdp) {
 
 var id= idaka;
 var filtre = this.props.filtre;
-alert(pdp)
 
-Actions.formations({param1:idaka, param2:pdp, param3:this.props.filtre});
+
+Actions.formations({param1:idaka, param2:pdp, param3:this.props.filtre , prenom:this.props.prenom});
 } 
 
    getDataEvenements(idaka,pdp) {
 
 var id= idaka;
 var filtre = this.props.filtre;
-alert(pdp)
 
-Actions.evenements({param1:idaka, param2:pdp, param3:this.props.filtre});
+
+Actions.evenements({param1:idaka, param2:pdp, param3:this.props.filtre,prenom:this.props.prenom});
 } 
   getDataRencontre(idaka,pdp) {
 
 var id= idaka;
 var filtre = this.props.filtre;
-alert(pdp)
 
-Actions.rencontre({param1:idaka, param2:pdp, param3:this.props.filtre});
+
+Actions.rencontre({param1:idaka, param2:pdp, param3:this.props.filtre,prenom:this.props.prenom});
 } 
+ monCompte(idaka,pdp) {
 
+Actions.moncompte({param1:idaka, param2:pdp, prenom:this.props.prenom});
+
+} 
 
 
 
@@ -168,6 +177,7 @@ else if(this.props.filtre == 'rencontre feat emploies feat formation') {
               </Right>
             </CardItem>
            
+          
 <CardItem>
   <MyIcon name='wechat' size = {20} color="#0b5345"/>
                             <TouchableOpacity>
@@ -177,6 +187,24 @@ else if(this.props.filtre == 'rencontre feat emploies feat formation') {
                 <Icon name="arrow-forward" />
               </Right>
 </CardItem>
+<CardItem>
+  <MyIcon name='user-o' size = {20} color="#0b5345"/>
+                            <TouchableOpacity onPress={this.monCompte.bind(this,this.props.id, this.props.pdp)}>
+                            <Text style = {{marginLeft:15}} >Mon compte </Text>
+                         </TouchableOpacity>
+                          <Right>
+                <Icon name="arrow-forward" />
+              </Right>
+</CardItem>
+ <CardItem>
+                <MyIcon name='sign-out' size = {20} color="#ff1a1a"/>
+                            <TouchableOpacity onPress={this.getOut}>
+                            <Text style = {{marginLeft:15 }}> Déconnecté en tan que  {this.props.prenom}</Text>
+                          </TouchableOpacity>
+              <Right>
+                <Icon name="arrow-forward" />
+              </Right>
+            </CardItem>
            </Card>
         </Content>
       </Container>

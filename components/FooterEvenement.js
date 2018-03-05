@@ -33,11 +33,16 @@ export default class AppFooter extends Component {
 
   alert("evenements"+id)
  }
+ goHome(pdp,id) {
 
+
+Actions.acceuil({param1:id, param2:pdp, prenom:this.props.prenom});
+
+ }
 getMenu(pdp,id) {
 
 
-  Actions.menuList({pdp:pdp, id:id})
+  Actions.menuList({pdp:pdp, id:id,prenom:this.props.prenom})
 }
 
 getFormationSauvegarde(idUtisateur) {
@@ -110,20 +115,21 @@ else if(this.props.filtre == 'rencontre feat emploies feat formation') {
               
             </Button>
             <Button vertical>
-              <MyIcon name='home' size = {25} color="#a569bd" />
+              <MyIcon name='home' size = {25} color="#a569bd" onPress= {this.goHome.bind(this,this.props.pdp,this.props.id)}/>
             
             </Button>
 
-             <Button >
-              <Icon name="menu" size = {25} color="#28b463" onPress= {this.getMenu.bind(this,this.props.pdp,this.props.id)} />
-        
-            </Button>
+            
             <Button >
               <MyIcon name="star-o" size = {25} color="#28b463" />
         
             </Button>
             <Button vertical>
               <MyIcon name="comments" size= {25} />
+            </Button>
+             <Button >
+              <Icon name="menu" size = {25} color="#28b463" onPress= {this.getMenu.bind(this,this.props.pdp,this.props.id)} />
+        
             </Button>
           </FooterTab>
         </Footer>

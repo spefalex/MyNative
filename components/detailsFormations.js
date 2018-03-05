@@ -19,7 +19,7 @@ import SideBar from './menu';
 import AutoTags from 'react-native-tag-autocomplete';
 import AppSoory from './AppSoory';
 import MyIcon from 'react-native-vector-icons/FontAwesome';
-import AppFooter from './FooterDetailsOffres';
+import AppFooter from './FooterDetailsFormations';
 import Swiper from 'react-native-swiper';
 import { Router, Scene, Actions} from 'react-native-router-flux';
 export default class MyNative extends Component {
@@ -58,7 +58,7 @@ var pdp = this.props.pdp;
 var idUser= this.props.idUser;
 
 
- return fetch('http://192.168.0.96:1337/lireOffre?idOffre='+id)
+ return fetch('http://192.168.0.96:1337/lireFormations?idFormation='+id)
     .then(response => response.json())
     .then(responseJson => {
 if(responseJson.message) {
@@ -69,9 +69,9 @@ alert("acune evenements correspond a votre centre interet")
 }
  else  {
 
-//  alert(responseJson.offre.sauvegardeEmploi.length)
 
- this.setState({data:responseJson.offre, ville:responseJson.offre.adresse[0].ville, adresse:responseJson.offre.adresse[0].adresse,nombre:responseJson.offre.sauvegardeEmploi.length})
+
+ this.setState({data:responseJson.formations, ville:responseJson.formations.ville, adresse:responseJson.formations.lieuDeFormation,nombre:responseJson.formations.participantFormation.length})
 
 
 
@@ -94,7 +94,10 @@ alert("acune evenements correspond a votre centre interet")
       
         <Content>
           <Card>
-          <Image source={{uri:this.state.data.logo}} style={{height:150, width:250, alignSelf:'center' }}/>
+
+           <CardItem cardBody>
+              <Image source={{uri:this.state.data.logo}} style={{height: 200, width: null, flex: 1}}/>
+            </CardItem>
            <CardItem>
 <Left>
 
@@ -103,7 +106,7 @@ alert("acune evenements correspond a votre centre interet")
 <Text style= {{color:"#0e76a8" , marginTop:'1%', alignSelf:'center'}}>
 
 
- {this.state.data.titreEmploi} 
+ {this.state.data.nomFiliere} 
 
 
 </Text>
@@ -112,14 +115,14 @@ alert("acune evenements correspond a votre centre interet")
 {"\n"}
 
 </Text> 
-<Text style={{marginRight:200}}> <MyIcon name="clock-o" />&nbsp;{this.state.data.dateLimite} </Text>
+<Text style={{marginRight:200}}> <MyIcon name="clock-o" />&nbsp;{this.state.data.dateFinFormation} </Text>
 
 <Text>
 <MyIcon name="map-marker" /> &nbsp; {this.state.adresse} <MyIcon name="table" /> {this.state.data.typeContrat}
 </Text>
 
 <Text>
-<MyIcon name="bookmark-o" /> &nbsp; {this.state.data.domaine} <MyIcon name="folder-open-o" />{this.state.data.nomInstitution} 
+<MyIcon name="bookmark-o" /> &nbsp; {this.state.data.typeFormation} <MyIcon name="folder-open-o" />{this.state.data.nomInstitution} 
 </Text>
 <Text>
  <MyIcon name="heart" style={{ color: '#ED4A6A' }} /> &nbsp;
@@ -130,19 +133,14 @@ Nombre de personne intéresser : {this.state.nombre}
 </Left>
 </CardItem>
 
-<Text style={{alignSelf:'center'}}> <MyIcon name="briefcase" size = {25}/> Description de offres </Text>
+<Text style={{alignSelf:'center'}}> <MyIcon name="briefcase" size = {25}/> Description de formation </Text>
 <CardItem content>
 
-<HTMLVIEW value={this.state.data.description}/>
+<HTMLVIEW value={this.state.data.descriptionFormation}/>
 
 </CardItem>
 
-<Text style={{alignSelf:'center'}}> <MyIcon name="info" size = {25}/> &nbsp; Profils Requis</Text>
-<CardItem content>
 
-<HTMLVIEW value={this.state.data.profilsRequis}/>
-
-</CardItem>
  
   
 
@@ -150,7 +148,7 @@ Nombre de personne intéresser : {this.state.nombre}
 
 
         </Content>
-        <AppFooter id={this.props.param1} idUser={this.props.idUser} pdp={this.props.pdp} prenom={this.props.prenom}/>
+        <AppFooter id={this.props.param1} idUser={this.props.idUser} pdp={this.props.pdp}/>
       </Container>
     );
   }

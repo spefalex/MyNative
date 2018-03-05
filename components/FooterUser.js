@@ -28,34 +28,35 @@ export default class FooterDetailsOffres extends Component {
     }
 
     }
-
-ignorer(idUtilisateur,idOffres)
+ignorer(idUserMaitre, idIgnorer)
 {
 
  
 
- 
-  fetch('http://192.168.0.96:1337/Ignorer/Offre', {
+ idUtilisateur= this.props.param1;
+  fetch('http://192.168.0.96:1337/Ignorer/Rencontre', {
   method: 'POST',
   headers: { 
            'Accept': 'application/json',
            'Content-Type': 'application/json' 
            },
-  body: JSON.stringify({idOffreEmploi:idOffres, idUtilisateur: idUtilisateur})
+  body: JSON.stringify({idUtilisateur:idUserMaitre, idIgnorer: idIgnorer})
 })
 .then((response) => response.json()) 
 .then((responseData) => {
 
 
 
-ToastAndroid.show('emplois ignorer', ToastAndroid.SHORT);
 
+ToastAndroid.show(' ignorer', ToastAndroid.SHORT);
+Actions.rencontre({param1:this.props.idUserMaitre, param2:this.props.pdp,prenom:this.props.prenom});
 
+   if(this.state.items.length == 0) {
 
-Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp,prenom:this.props.prenom});
+    this.setState({soory:true})
 
-
-  
+    Actions.soory();
+   }
   
 
 })
@@ -63,6 +64,43 @@ Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp,prenom:this.pro
 
 
 }
+
+
+demandeRencontre(idUserMaitre, idDemande)
+{
+ 
+ 
+
+  idUtilisateur = this.props.param1;
+  fetch('http://192.168.0.96:1337/demande/rencontre', {
+  method: 'POST',
+  headers: { 
+           'Accept': 'application/json',
+           'Content-Type': 'application/json' 
+           },
+  body: JSON.stringify({idDemande:idDemande, idUtilisateur: idUserMaitre})
+})
+.then((response) => response.json()) 
+.then((responseData) => {
+
+
+ 
+
+ToastAndroid.show('Demande envoyé', ToastAndroid.SHORT);
+ 
+Actions.rencontre({param1:this.props.idUserMaitre, param2:this.props.pdp,prenom:this.props.prenom});
+   if(this.state.items.length == 0) {
+    this.setState({soory:true})
+    Actions.soory()
+   }
+  
+
+})
+.catch((err) => { console.log(err); });
+
+
+}
+
 
 
 sauvegarder(idUtilisateur,idOffres)
@@ -107,26 +145,8 @@ Actions.acceuil({param1:this.props.idUser, param2:this.props.pdp,prenom:this.pro
     return (
     
         <Footer>
-       <Item>
-  <List style={{flexDirection:'column', flexWrap: 'wrap', alignItems: 'flex-start' ,flexDirection:'row'}} >
-
-  
-            <ListItem itemHeader>
-    <Text style={{fontSize:16,color:"#ff6666"}} onPress={function(){ this.ignorer(this.props.idUser,this.props.id) }.bind(this) } > <MyIcon name="close" size = {16} color="#ff6666" /> Ignorer</Text>
-            </ListItem>
-  
-            <ListItem>
-  <Text style={{fontSize:16,color:'#00ffaa'}} onPress={function(){ this.sauvegarder(this.props.idUser,this.props.id) }.bind(this) }> <MyIcon name="star-o" size = {16} color="#00ffaa" /> Sauvegarder </Text>
-            </ListItem>
-
-  
-            <ListItem>
-            <Text style={{fontSize:16,color:'#99bbff'}} onPress={function(){ this.participe(item.id,key) }.bind(this) }> <MyIcon name="heart-o" size = {16} color="#99bbff" /> Matcher </Text>
-            </ListItem>
-          </List>     
-  </Item>
-        </Footer>
-    
+         <Text style = {{alignSelf:'center'}}> <MyIcon name="edit"size = {22} /> Modifier </Text> 
+        </Footer> 
     );
   }
 }

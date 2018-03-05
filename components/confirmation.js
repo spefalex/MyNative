@@ -58,7 +58,7 @@ return fetch('http://192.168.0.96:1337/Informations/Utilisateur?id='+id)
 .then((response)=> response.json())
 .then((responseJson)=>{
 var datasend=JSON.stringify(responseJson);
-alert(responseJson.utilisateur.photoUtilisateur);
+
 
 if(responseJson.utilisateur.sexe == 'male')
 {this.setState({salutation:"Monsieur"})} else {this.setState({salutation:"Mademoiselle / Madame "})}
@@ -112,8 +112,9 @@ renderButton(){
  this.setState({loading:false})
 
  console.log("response: " + responseData); if(responseData.token){
-Actions.acceuil({param1:this.state.idUser,param2:this.state.imageUrl});
+//Actions.acceuil({param1:this.state.idUser,param2:this.state.imageUrl,prenom:this.state.pseudo});
 
+Actions.infosup({param1:this.state.idUser,param2:this.state.imageUrl,prenom:this.state.pseudo});
 } else { 
 
 alert(responseData.message);
